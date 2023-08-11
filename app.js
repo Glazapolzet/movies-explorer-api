@@ -8,6 +8,8 @@ const { errors } = require('celebrate');
 const cors = require('cors');
 const { ALLOWED_ORIGINS, DB_HOST, PORT } = require('./constants/constants');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const router = require('./routes/index');
+const { defaultErrorHandler } = require('./middlewares/errors');
 
 const app = express();
 app.use(cors({
@@ -25,9 +27,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 
-// app.use('/', router);
+app.use('/', router);
 
 app.use(errorLogger);
 app.use(errors());
+
+app.use(defaultErrorHandler);
 
 app.listen(PORT);

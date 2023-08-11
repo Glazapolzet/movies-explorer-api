@@ -6,6 +6,8 @@ const userRouter = require('./users');
 const signInRouter = require('./signin');
 const signUpRouter = require('./signup');
 const signOutRouter = require('./signout');
+const NotFoundError = require("../errors/NotFoundError");
+const auth = require("../middlewares/auth");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -37,7 +39,7 @@ router.use('/movies', moviesRouter);
 router.use('/signout', signOutRouter);
 
 router.all('*', (req, res, next) => {
-  next(new NotFoundError('Неверный адрес'));
+  next(new NotFoundError('Страница по указанному маршруту не найдена.'));
 });
 
 module.exports = router;
