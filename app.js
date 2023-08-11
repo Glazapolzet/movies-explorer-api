@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cors = require('cors');
-const { ALLOWED_ORIGINS, DB_HOST, PORT } = require("./constants/constants");
+const { ALLOWED_ORIGINS, DB_HOST, PORT } = require('./constants/constants');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
