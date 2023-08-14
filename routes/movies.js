@@ -1,7 +1,7 @@
+const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const { getMovies, createMovie, deleteMovie } = require('../controllers/movies');
 const { URL_REGEX } = require('../constants/constants');
-const router = require('express').Router();
 
 router.get('/', getMovies);
 router.post(
@@ -42,7 +42,7 @@ router.delete(
       'any.required': 'Поле {#label} является обязательным',
     },
   }),
-  deleteMovie
+  deleteMovie,
 );
 
 module.exports = router;

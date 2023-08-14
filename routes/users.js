@@ -1,6 +1,6 @@
-const { celebrate, Joi } = require('celebrate');
-const { getUser, updateUser } = require("../controllers/users");
 const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
+const { getUser, updateUser } = require('../controllers/users');
 
 router.get('/me', getUser);
 router.patch(
@@ -19,7 +19,7 @@ router.patch(
       'any.required': 'Поле {#label} является обязательным',
     },
   }),
-  updateUser
+  updateUser,
 );
 
 module.exports = router;

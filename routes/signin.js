@@ -1,6 +1,6 @@
+const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const { login } = require('../controllers/users');
-const router = require('express').Router();
 
 router.post(
   '/',
@@ -16,7 +16,7 @@ router.post(
       'any.required': 'Поле {#label} является обязательным',
     },
   }),
-  login
+  login,
 );
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const rateLimit = require('express-rate-limit');
 const router = require('express').Router();
-const moviesRouter = require('./movies');
+const movieRouter = require('./movies');
 const userRouter = require('./users');
 const signInRouter = require('./signin');
 const signUpRouter = require('./signup');
@@ -33,7 +33,7 @@ router.use('/signup', signUpRouter);
 router.use(auth);
 
 router.use('/users', userRouter);
-router.use('/movies', moviesRouter);
+router.use('/movies', movieRouter);
 
 router.use('/signout', signOutRouter);
 

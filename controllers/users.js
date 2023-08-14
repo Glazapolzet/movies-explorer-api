@@ -10,7 +10,7 @@ const { JWT_SECRET } = require('../constants/constants');
 const getUser = (req, res, next) => {
   const { _id: userId } = req.user;
 
-  User.find(userId)
+  User.findById(userId)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден.');
@@ -48,8 +48,8 @@ const createUser = (req, res, next) => {
           }
 
           return next(err);
-        })
-    })
+        });
+    });
 };
 
 const login = (req, res, next) => {
@@ -68,14 +68,15 @@ const login = (req, res, next) => {
           maxAge: 604800,
           httpOnly: true,
           sameSite: true,
-        });
+        })
+        .send({ message: 'Вы вошли в свой аккаунт' });
     })
     .catch(next);
 };
 
 const logout = (req, res) => {
   res.clearCookie('token').send({ message: 'Выход из учетной записи.' });
-}
+};
 
 const updateUser = (req, res, next) => {
   const { _id: userId } = req.user;
@@ -106,7 +107,7 @@ const updateUser = (req, res, next) => {
       }
 
       return next(err);
-    })
+    });
 };
 
 module.exports = {
