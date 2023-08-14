@@ -1,4 +1,3 @@
-const { celebrate, Joi } = require('celebrate');
 const rateLimit = require('express-rate-limit');
 const router = require('express').Router();
 const moviesRouter = require('./movies');
@@ -6,8 +5,8 @@ const userRouter = require('./users');
 const signInRouter = require('./signin');
 const signUpRouter = require('./signup');
 const signOutRouter = require('./signout');
-const NotFoundError = require("../errors/NotFoundError");
-const auth = require("../middlewares/auth");
+const NotFoundError = require('../errors/NotFoundError');
+const auth = require('../middlewares/auth');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
