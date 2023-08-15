@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const { isEmail } = require('validator');
 const UnauthorizedError = require('../errors/UnauthorizedError');
+const NotFoundError = require('../errors/NotFoundError');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -38,6 +40,17 @@ userSchema.statics.findUserByCredentials = function (email, password) {
 
           return user;
         });
+    });
+};
+
+userSchema.statics.findUserById = function (userId) {
+  return this.findById(userId)
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(NotFoundError('Пользователь с указанным _id не найден.'));
+      }
+
+      return user;
     });
 };
 

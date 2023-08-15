@@ -10,12 +10,8 @@ const { JWT_SECRET } = require('../constants/constants');
 const getUser = (req, res, next) => {
   const { _id: userId } = req.user;
 
-  User.findById(userId)
+  User.findUserById(userId)
     .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь с указанным _id не найден.');
-      }
-
       res.send(user);
     })
     .catch((err) => {

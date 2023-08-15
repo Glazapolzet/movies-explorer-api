@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Movie = require('../models/movie');
+const User = require('../models/user');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
@@ -7,10 +8,19 @@ const ForbiddenError = require('../errors/ForbiddenError');
 const getMovies = (req, res, next) => {
   const { _id: userId } = req.user;
 
-  Movie.find({})
-    .populate('owner')
-    .then((movies) => res.send(movies))
-    .catch(next);
+  User.findUserById(userId)
+    .then((user) => {
+      return Movie.find({ owner: user._id })
+        .populate('owner')
+        .then((movies) => res.send(movies));
+    })
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError) {
+        return next(new BadRequestError('Передан некорректный _id пользователя.'));
+      }
+
+      return next(err);
+    });
 };
 
 const createMovie = (req, res, next) => {
@@ -69,7 +79,7 @@ const deleteMovie = (req, res, next) => {
       }
 
       Movie.deleteOne(movie)
-        .then((deletedMovie) => res.send(deletedMovie))
+        .then(() => res.send(movie))
         .catch(next);
     })
     .catch((err) => {
