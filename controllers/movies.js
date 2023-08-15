@@ -9,11 +9,9 @@ const getMovies = (req, res, next) => {
   const { _id: userId } = req.user;
 
   User.findUserById(userId)
-    .then((user) => {
-      return Movie.find({ owner: user._id })
-        .populate('owner')
-        .then((movies) => res.send(movies));
-    })
+    .then((user) => Movie.find({ owner: user._id })
+      .populate('owner')
+      .then((movies) => res.send(movies)))
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
         return next(new BadRequestError('Передан некорректный _id пользователя.'));
