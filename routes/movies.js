@@ -33,12 +33,11 @@ router.delete(
   '/:movieId',
   celebrate({
     params: Joi.object().keys({
-      movieId: Joi.string().hex().length(24).required(),
+      movieId: Joi.number().required(),
     }),
   }, {
     messages: {
-      'string.hex': 'Параметр {#label} должен состоять из латинских букв или цифр',
-      'string.length': 'Параметр {#label} должен иметь длину {#limit} символов',
+      'string.number': 'Параметр {#label} должен состоять из цифр',
       'any.required': 'Поле {#label} является обязательным',
     },
   }),
