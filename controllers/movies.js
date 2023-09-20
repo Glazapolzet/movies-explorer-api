@@ -65,28 +65,32 @@ const deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   const { _id: userId } = req.user;
 
-  Movie.findById(movieId)
-    .populate('owner')
-    .then((movie) => {
-      if (!movie) {
-        throw new NotFoundError('Фильм с указанным _id не найден.');
-      }
+  User.findUserById(userId)
+    .then((user) => {
+      Movie.findOne({ movieId, owner: user._id })
+        .populate('owner')
+        .then((movie) => {
+          if (!movie) {
+            throw new NotFoundError('Фильм с указанным _id не найден.');
+          }
 
-      if (movie.owner.id !== userId) {
-        throw new ForbiddenError('Нельзя удалить чужой фильм.');
-      }
+          if (movie.owner.id !== userId) {
+            throw new ForbiddenError('Нельзя удалить чужой фильм.');
+          }
 
-      Movie.deleteOne(movie)
-        .then(() => res.send(movie))
-        .catch(next);
+          Movie.deleteOne(movie)
+            .then(() => res.send(movie))
+            .catch(next);
+        })
+        .catch((err) => {
+          if (err instanceof mongoose.Error.CastError) {
+            return next(new BadRequestError('Передан некорректный _id фильма.'));
+          }
+
+          return next(err);
+        });
     })
-    .catch((err) => {
-      if (err instanceof mongoose.Error.CastError) {
-        return next(new BadRequestError('Передан некорректный _id фильма.'));
-      }
-
-      return next(err);
-    });
+    .catch(next);
 };
 
 module.exports = {
