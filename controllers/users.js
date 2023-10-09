@@ -61,7 +61,7 @@ const login = (req, res, next) => {
 
       res
         .cookie('token', token, {
-          maxAge: 604800,
+          maxAge: 6048000,
           httpOnly: true,
           sameSite: true,
         })
